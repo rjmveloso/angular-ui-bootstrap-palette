@@ -1,0 +1,27 @@
+{
+  "name": "angular-bootstrap-palette",
+  "version": "1.0.0",
+  "description": "AngularJS Bootstrap palette",
+  "author": "ricardo.veloso",
+  "keywords": [
+    "angularjs",
+    "bootstrap"
+  ],
+  "license": "ISC",
+  "main": "gruntfile.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "bugs": {
+    "url": "https://github.com/rjmveloso/angular-ui-bootstrap-palette/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjmveloso/angular-ui-bootstrap-palette.git"
+  },
+  "homepage": "https://github.com/rjmveloso/angular-ui-bootstrap-palette#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "angular": "^1.6.1"
+  }
+}
