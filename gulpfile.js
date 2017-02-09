@@ -11,7 +11,9 @@ var gulp = require('gulp'),
 	minify = require('gulp-minify-html'),
 	template = require('gulp-angular-templatecache');
 
-var SOURCE = 'src/main/**/*.js'
+var Server = require('karma').Server;
+
+var SOURCE = 'src/**/*.js';
 var TARGET = 'dist';
 
 //using data from package.json 
@@ -24,8 +26,21 @@ var banner = ['/**',
   ' */',
   ''].join('\n');
 
+var configs = {
+	minify: {
+		empty: true,
+		spare: true,
+		quotes: true
+	},
+	template: {
+		root: 'template/',
+		module: 'angular.bootstrap.palette'
+	}
+}
+
 gulp.task('default', ['build', 'test']);
-gulp.task('build', ['clean', 'lint', 'scripts']);
+gulp.task('build', ['clean', 'scripts']);
+gulp.task('test', ['build', 'karma']);
 
 gulp.task('clean', function() {
 	return gulp
@@ -39,13 +54,13 @@ gulp.task('lint', function() {
     .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('scripts', function() {
+gulp.task('scripts', ['lint'], function() {
 	var scripts = gulp.src(SOURCE);
 	
 	var templates = gulp.src('src/**/*.html')
 		.pipe(plumber({ errorHandler: handleError }))
-    	.pipe(minify({empty: true, spare: true, quotes: true}))
-    	.pipe(template({module: 'angular-bootstrap-palette'}));
+    	.pipe(minify(configs.minify))
+    	.pipe(template(configs.template));
 	
 	return merge(scripts, templates)
 		.pipe(plumber({ errorHandler: handleError }))
@@ -57,8 +72,13 @@ gulp.task('scripts', function() {
 		.pipe(gulp.dest(TARGET));
 });
 
-gulp.task('test', function(done) {
-	
+gulp.task('karma', ['build'], function(done) {
+	var karma = new Server({
+		configFile: __dirname +'/karma.conf.js',
+		autoWatch: false,
+		singleRun: true
+	}, done);
+	karma.start();
 });
 
 var handleError = function (err) {

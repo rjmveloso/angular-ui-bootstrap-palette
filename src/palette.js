@@ -5,9 +5,11 @@
 		'<div class="palette">\
 		   <div class="col-md-4 palette-options">\
 		     <div class="form-group">\
-		       <label for="{{::optid}}" class="control-label">{{$ctrl.optionsLabel}}</label>\
-		       <select id="{{::optid}}" multiple ng-model="$ctrl.optmodel" ng-disabled="$ctrl.disabled"\
-		        ng-options="{{$ctrl.options}}" class="form-control">\
+		       <div ng-transclude="options-header">\
+		         <label for="{{::$ctrl.optid}}" class="control-label">{{$ctrl.optionsLabel}}</label>\
+		       </div>\
+		       <select id="{{::$ctrl.optid}}" multiple ng-model="$ctrl.optmodel" ng-options="{{$ctrl.options}}"\
+		         ng-disabled="$ctrl.disabled" ng-required="$ctrl.required" class="form-control">\
 		       </select>\
 		     </div>\
 		   </div>\
@@ -21,9 +23,11 @@
 		   </div>\
 		   <div class="col-md-4 palette-selected">\
 	         <div class="form-group">\
-		       <label for="{{::selid}}" class="control-label">{{$ctrl.selectedLabel}}</label>\
-		       <select id="{{::selid}}" multiple ng-model="$ctrl.selmodel" ng-disabled="$ctrl.disabled"\
-		        ng-options="{{$ctrl.selected}}" class="form-control">\
+		       <div ng-transclude="selected-header">\
+		         <label for="{{::$ctrl.selid}}" class="control-label">{{$ctrl.selectedLabel}}</label>\
+		       </div>\
+		       <select id="{{::$ctrl.selid}}" multiple ng-model="$ctrl.selmodel" ng-options="{{$ctrl.selected}}"\
+		         ng-disabled="$ctrl.disabled" ng-required="$ctrl.required" class="form-control">\
 		       </select>\
 		     </div>\
 		   </div>\
@@ -32,14 +36,14 @@
 	// @see https://github.com/angular/angular.js/blob/master/src/ng/directive/ngOptions.js#L236
 	var OPTIONS_PATTERN = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?(?:\s+disable\s+when\s+([\s\S]+?))?\s+for\s+(?:([$\w][$\w]*)|(?:\(\s*([$\w][$\w]*)\s*,\s*([$\w][$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/;
 	
-	angular.module('angular-bootstrap-palette').component('palette', {
+	angular.module('angular.bootstrap.palette', []).component('palette', {
 		bindings: {
 			model: '=', // Is this needed?? selected expression should refer the model
 			options: '@',
 			selected: '@',
-			preserve: '?', // Preserve selected options on move
 			optionsLabel: '<?',
-			selectedLabel: '<?'
+			selectedLabel: '<?',
+			//sort: '&?' // A function that defines a sort order on move
 		},
 		transclude: {
 			'options-header': '?optionsHeader',
@@ -53,7 +57,9 @@
 
 	PaletteController.$inject = [ '$scope', '$parse', '$attrs' ];
 	function PaletteController($scope, $parse, $attrs) {
-
+		
+		var config = {};
+		
 		$attrs.$observe('disabled', function(value) {
 			this.disabled = value !== undefined ? value : false;
 		});
@@ -61,42 +67,52 @@
 		this.$onInit = function() {
 			this.optid = $scope.$id;
 			this.selid = $attrs['id'] || $scope.$id;
+		
+			// attribute: no need for interpolation {{preserve}}
+			config.preserve = $scope.$eval($attrs.preserve);
+			//config.sort = this.sort;
 			
 		    var options = this.options.match(OPTIONS_PATTERN);
 		    var selected = this.selected.match(OPTIONS_PATTERN);
-
-		    this.optmodel = this.selmodel = [];
-		    this.optsource = $parse(options[8]);
-		    this.selsource = $parse(selected[8]);
 		    
-		    watchable(this.optsource);
-		    watchable(this.selsource);
+		    var optsource = $parse(options[8]);
+		    var selsource = $parse(selected[8]);
+		    
+		    this.optmodel = this.selmodel = [];
+		    this.optsource = optsource($scope);
+		    this.selsource = selsource($scope);
+		    
+		    watchable(optsource);
+		    watchable(selsource);
 		};
 		
 		this.onMoveLeft = function() {
-			var source = this.selsource($scope);
-			var target = this.optsource($scope);
+			var source = this.selsource;
+			var target = this.optsource;
 			move(this.selmodel, source, target);
+			rearrange(this.selmodel, this.optmodel, target);
 			this.model = source;
-			this.optmodel = this.preserve === true ? this.selmodel : [];
-			this.selmodel = [];
 		};
 		
 		this.onMoveRight = function() {
-		    var source = this.optsource($scope);
-			var target = this.selsource($scope);
+		    var source = this.optsource;
+			var target = this.selsource;
 			move(this.optmodel, source, target);
+			rearrange(this.optmodel, this.selmodel, target);
 			this.model = target;
-			this.selmodel = this.preserve === true ? this.optmodel : [];
-			this.optmodel = [];
 		};
 		
-		function move(selected, from, to) {
+		function move(selected, source, target) {
 			angular.forEach(selected, function(item) {
-				var idx = from.indexOf(item);
-				from.splice(idx, 1);
-				to.push(item);
+				var idx = source.indexOf(item);
+				source.splice(idx, 1);
+				target.push(item);
 			});
+		}
+		
+		function rearrange(selected, model, target) {
+			model = config.preserve === true ? selected : [];
+			selected = [];
 		}
 		
 		function watchable(source) {

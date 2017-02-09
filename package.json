@@ -2,26 +2,24 @@
   "name": "angular-bootstrap-palette",
   "version": "1.0.0",
   "description": "AngularJS Bootstrap palette",
-  "author": "ricardo.veloso",
   "keywords": [
     "angularjs",
     "bootstrap"
   ],
-  "license": "ISC",
-  "main": "gruntfile.js",
-  "scripts": {
-    "test": "gulp test"
-  },
-  "bugs": {
-    "url": "https://github.com/rjmveloso/angular-ui-bootstrap-palette/issues"
-  },
+  "license": "MIT",
+  "author": "https://github.com/rjmveloso/angular-ui-bootstrap-palette/graphs/contributors",
+  "homepage": "https://github.com/rjmveloso/angular-ui-bootstrap-palette",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rjmveloso/angular-ui-bootstrap-palette.git"
   },
-  "homepage": "https://github.com/rjmveloso/angular-ui-bootstrap-palette#readme",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
   "devDependencies": {
     "angular": "^1.6.1",
+    "angular-mocks": "^1.6.2",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^2.0.0",
     "gulp-clean": "^0.3.2",
@@ -32,7 +30,11 @@
     "gulp-minify-html": "^1.0.6",
     "gulp-plumber": "^1.1.0",
     "gulp-uglify": "^2.0.1",
+    "jasmine-core": "^2.5.2",
     "jshint": "^2.9.4",
-    "jshint-stylish": "^2.2.1"
+    "jshint-stylish": "^2.2.1",
+    "karma": "^1.4.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.2"
   }
 }

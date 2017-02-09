@@ -1,5 +1,6 @@
 .project
 .DS_Store
 
+dist
 .settings
 node_modules
