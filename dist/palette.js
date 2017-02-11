@@ -1,43 +1,11 @@
 /**
  * angular-bootstrap-palette - AngularJS Bootstrap palette
- * @version v1.0.0
+ * @version v0.1.0
  * @link https://github.com/rjmveloso/angular-ui-bootstrap-palette
  * @license MIT
  */
 (function() {
 	'use strict';
-
-	var template =
-		'<div class="palette">\
-		   <div class="col-md-4 palette-options">\
-		     <div class="form-group">\
-		       <div ng-transclude="options-header">\
-		         <label for="{{::$ctrl.optid}}" class="control-label">{{$ctrl.optionsLabel}}</label>\
-		       </div>\
-		       <select id="{{::$ctrl.optid}}" multiple ng-model="$ctrl.optmodel" ng-options="{{$ctrl.options}}"\
-		         ng-disabled="$ctrl.disabled" ng-required="$ctrl.required" class="form-control">\
-		       </select>\
-		     </div>\
-		   </div>\
-		   <div class="col-md-2 text-center palette-controls">\
-		     <button type="button" ng-disabled="$ctrl.disabled" ng-click="$ctrl.onMoveRight()" class="btn btn-primary">\
-		       <i class="fa fa-chevron-right" aria-hidden="true"></i>\
-		     </button>\
-		     <button type="button" ng-disabled="$ctrl.disabled" ng-click="$ctrl.onMoveLeft()" class="btn btn-danger">\
-		       <i class="fa fa-chevron-left" aria-hidden="true"></i>\
-	         </button>\
-		   </div>\
-		   <div class="col-md-4 palette-selected">\
-	         <div class="form-group">\
-		       <div ng-transclude="selected-header">\
-		         <label for="{{::$ctrl.selid}}" class="control-label">{{$ctrl.selectedLabel}}</label>\
-		       </div>\
-		       <select id="{{::$ctrl.selid}}" multiple ng-model="$ctrl.selmodel" ng-options="{{$ctrl.selected}}"\
-		         ng-disabled="$ctrl.disabled" ng-required="$ctrl.required" class="form-control">\
-		       </select>\
-		     </div>\
-		   </div>\
-		 </div>';
 
 	// @see https://github.com/angular/angular.js/blob/master/src/ng/directive/ngOptions.js#L236
 	var OPTIONS_PATTERN = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?(?:\s+disable\s+when\s+([\s\S]+?))?\s+for\s+(?:([$\w][$\w]*)|(?:\(\s*([$\w][$\w]*)\s*,\s*([$\w][$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/;
@@ -55,8 +23,7 @@
 			'options-header': '?optionsHeader',
 			'selected-header': '?selectedHeader'
 		},
-		template: template,
-		//templateUrl: 'palette.html',
+		templateUrl: 'palette.html',
 		controller: PaletteController,
 		controllerAs: '$palette'
 	});
@@ -72,7 +39,7 @@
 		
 		this.$onInit = function() {
 			this.optid = $scope.$id;
-			this.selid = $attrs['id'] || $scope.$id;
+			this.selid = $attrs['palette-id'] || $scope.$id;
 		
 			// attribute: no need for interpolation {{preserve}}
 			config.preserve = $scope.$eval($attrs.preserve);
@@ -140,10 +107,4 @@
 		}
 	}
 })();
-/**
- * angular-bootstrap-palette - AngularJS Bootstrap palette
- * @version v1.0.0
- * @link https://github.com/rjmveloso/angular-ui-bootstrap-palette
- * @license MIT
- */
 angular.module('angular.bootstrap.palette').run(['$templateCache', function($templateCache) {$templateCache.put('template/palette.html','<div class="palette"><div class="col-md-4 palette-options"><div class="form-group"><div ng-transclude="options-header"><label for="{{::$ctrl.optid}}" class="control-label">{{$ctrl.optionsLabel}}</label></div><select id="{{::$ctrl.optid}}" multiple="" ng-model="$ctrl.optmodel" ng-options="{{$ctrl.options}}" \\="" ng-disabled="$ctrl.disabled" ng-required="$ctrl.required" class="form-control"></select></div></div><div class="col-md-2 text-center palette-controls"><button type="button" ng-disabled="$ctrl.disabled" ng-click="$ctrl.onMoveRight()" class="btn btn-primary"><i class="fa fa-chevron-right" aria-hidden="true"></i></button> <button type="button" ng-disabled="$ctrl.disabled" ng-click="$ctrl.onMoveLeft()" class="btn btn-danger"><i class="fa fa-chevron-left" aria-hidden="true"></i></button></div><div class="col-md-4 palette-selected"><div class="form-group"><div ng-transclude="selected-header"><label for="{{::$ctrl.selid}}" class="control-label">{{$ctrl.selectedLabel}}</label></div><select id="{{::$ctrl.selid}}" multiple="" ng-model="$ctrl.selmodel" ng-options="{{$ctrl.selected}}" \\="" ng-disabled="$ctrl.disabled" ng-required="$ctrl.required" class="form-control"></select></div></div></div>');}]);

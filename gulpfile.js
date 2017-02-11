@@ -55,7 +55,9 @@ gulp.task('lint', function() {
 });
 
 gulp.task('scripts', ['lint'], function() {
-	var scripts = gulp.src(SOURCE);
+	var scripts = gulp.src(SOURCE)
+		.pipe(plumber({ errorHandler: handleError }))
+		.pipe(header(banner, { pkg: pkg }));
 	
 	var templates = gulp.src('src/**/*.html')
 		.pipe(plumber({ errorHandler: handleError }))
@@ -64,7 +66,6 @@ gulp.task('scripts', ['lint'], function() {
 	
 	return merge(scripts, templates)
 		.pipe(plumber({ errorHandler: handleError }))
-		.pipe(header(banner, { pkg: pkg }))
 		.pipe(concat('palette.js'))
 		.pipe(gulp.dest(TARGET))
 		.pipe(uglify())
