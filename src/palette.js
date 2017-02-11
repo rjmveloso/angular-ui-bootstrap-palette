@@ -1,10 +1,19 @@
 (function() {
 	'use strict';
 
-	// @see https://github.com/angular/angular.js/blob/master/src/ng/directive/ngOptions.js#L236
-	var OPTIONS_PATTERN = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?(?:\s+disable\s+when\s+([\s\S]+?))?\s+for\s+(?:([$\w][$\w]*)|(?:\(\s*([$\w][$\w]*)\s*,\s*([$\w][$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/;
+	var palette = angular.module('angular.bootstrap.palette', [])
 	
-	angular.module('angular.bootstrap.palette', []).component('palette', {
+	palette.factory('paletteParser', ['$parse', function ($parse) {
+		// @see https://github.com/angular/angular.js/blob/master/src/ng/directive/ngOptions.js#L236
+		var OPTIONS_PATTERN = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?(?:\s+disable\s+when\s+([\s\S]+?))?\s+for\s+(?:([$\w][$\w]*)|(?:\(\s*([$\w][$\w]*)\s*,\s*([$\w][$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/;
+	
+		return function(expression) {
+			var match = expression.match(OPTIONS_PATTERN);
+			return $parse(match[8]);
+		}
+	}]);
+			
+	palette.component('palette', {
 		bindings: {
 			model: '=', // Is this needed?? selected expression should refer the model
 			options: '@',
@@ -22,13 +31,17 @@
 		controllerAs: '$palette'
 	});
 
-	PaletteController.$inject = [ '$scope', '$parse', '$attrs' ];
-	function PaletteController($scope, $parse, $attrs) {
+	PaletteController.$inject = [ '$scope', '$attrs', 'paletteParser' ];
+	function PaletteController($scope, $attrs, paletteParser) {
 		
 		var config = {};
 		
 		$attrs.$observe('disabled', function(value) {
 			this.disabled = value !== undefined ? value : false;
+		});
+		
+		$attrs.$observe('required', function(value) {
+			this.required = value !== undefined ? value : false;
 		});
 		
 		this.$onInit = function() {
@@ -38,12 +51,9 @@
 			// attribute: no need for interpolation {{preserve}}
 			config.preserve = $scope.$eval($attrs.preserve);
 			//config.sort = this.sort;
-			
-		    var options = this.options.match(OPTIONS_PATTERN);
-		    var selected = this.selected.match(OPTIONS_PATTERN);
 		    
-		    var optsource = $parse(options[8]);
-		    var selsource = $parse(selected[8]);
+		    var optsource = paletteParser(this.options);
+		    var selsource = paletteParser(this.selected);
 		    
 		    this.optmodel = this.selmodel = [];
 		    this.optsource = optsource($scope);
