@@ -6,18 +6,17 @@ describe('angular-bootstrap-palette', function() {
 	// @see $https://docs.angularjs.org/api/ngMock/service/$componentController
 	// cannot use $componentController since we need $observe in $attrs
 	// we need to extract those from $compile instead of use as locals
-	angular.module('dummy', []).component('dummy', {
-		controller: ['$attrs', function($attrs) {
+	angular.module('locals', []).controller('controller',
+		['$attrs', function($attrs) {
 			injected.$attrs = $attrs;
 		}]
-	});
+	);
 	
-	beforeEach(module('dummy', 'angular.bootstrap.palette'));
+	beforeEach(module('locals', 'angular.bootstrap.palette'));
 	
 	beforeEach(inject(function($rootScope, $compile) {
-		// invoke dummy component to get $attrs
-		var element = $compile('<dummy>')($rootScope);
-		//console.log('$ATTRS: ' + injected.$attrs);
+		// invoke dummy controller to get $attrs
+		$compile('<span ng-controller="controller">')($rootScope);
 	}));
 	
 	beforeEach(inject(function($rootScope) {
@@ -27,16 +26,16 @@ describe('angular-bootstrap-palette', function() {
 		$scope.selected = [];
 		
 		$scope.options = [
-	      { name: 'Adam',      age: 12 },
-	      { name: 'Amalie',    age: 12 },
-	      { name: 'Estefanía', age: 21 },
-	      { name: 'Adrian',    age: 21 },
-	      { name: 'Wladimir',  age: 30 },
-	      { name: 'Samantha',  age: 30 },
-	      { name: 'Ricardo',   age: 35 },
-	      { name: 'Nicole',    age: 43 },
-	      { name: 'Natasha',   age: 54 }
-	    ];
+		  { name: 'Adam',      age: 12 },
+		  { name: 'Amalie',    age: 12 },
+		  { name: 'Estefanía', age: 21 },
+		  { name: 'Adrian',    age: 21 },
+		  { name: 'Wladimir',  age: 30 },
+		  { name: 'Samantha',  age: 30 },
+		  { name: 'Ricardo',   age: 35 },
+		  { name: 'Nicole',    age: 43 },
+		  { name: 'Natasha',   age: 54 }
+		];
 	}));
 	
 	// test controller
