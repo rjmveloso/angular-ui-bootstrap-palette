@@ -1,0 +1,28 @@
+.palette {
+    display: flex;
+    align-items: center;
+}
+
+.palette-controls {
+	text-align: center;
+}
+
+.palette-move-left:after {
+	font-family: "Glyphicons Halflings";
+	content:"\e079";
+	top: 1px;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+}
+
+.palette-move-right {
+	font-family: "Glyphicons Halflings";
+	content:"\e080";
+    top: 1px;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+}

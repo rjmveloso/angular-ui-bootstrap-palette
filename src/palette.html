@@ -2,28 +2,28 @@
   <div class="col-md-4 palette-options">
     <div class="form-group">
       <div ng-transclude="options-header">
-        <label for="{{::$ctrl.optid}}" class="control-label">{{$ctrl.optionsLabel}}</label>
+        <label for="{{::$palette.optid}}" class="control-label">{{$palette.optionsLabel}}</label>
       </div>
-      <select id="{{::$ctrl.optid}}" multiple ng-model="$ctrl.optmodel" ng-options="{{$ctrl.options}}"\
-        ng-disabled="$ctrl.disabled" ng-required="$ctrl.required" class="form-control">
+      <select id="{{::$palette.optid}}" multiple="multiple" ng-model="$palette.optmodel" ng-options="{{$palette.optencoder}}"
+        ng-disabled="$palette.disabled" ng-required="$palette.required" class="form-control">
       </select>
     </div>
   </div>
-  <div class="col-md-2 text-center palette-controls">
-    <button type="button" ng-disabled="$ctrl.disabled" ng-click="$ctrl.onMoveRight()" class="btn btn-primary">
-      <i class="fa fa-chevron-right" aria-hidden="true"></i>
+  <div class="col-md-2 palette-controls">
+    <button type="button" ng-disabled="$palette.disabled" ng-click="$palette.onMoveRight()" class="btn btn-primary">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
     </button>
-    <button type="button" ng-disabled="$ctrl.disabled" ng-click="$ctrl.onMoveLeft()" class="btn btn-danger">
-      <i class="fa fa-chevron-left" aria-hidden="true"></i>
-       </button>
+    <button type="button" ng-disabled="$palette.disabled" ng-click="$palette.onMoveLeft()" class="btn btn-danger">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    </button>
   </div>
   <div class="col-md-4 palette-selected">
        <div class="form-group">
       <div ng-transclude="selected-header">
-        <label for="{{::$ctrl.selid}}" class="control-label">{{$ctrl.selectedLabel}}</label>
+        <label for="{{::$palette.selid}}" class="control-label">{{$palette.selectedLabel}}</label>
       </div>
-      <select id="{{::$ctrl.selid}}" multiple ng-model="$ctrl.selmodel" ng-options="{{$ctrl.selected}}"\
-        ng-disabled="$ctrl.disabled" ng-required="$ctrl.required" class="form-control">
+      <select id="{{::$palette.selid}}" multiple="multiple" ng-model="$palette.selmodel" ng-options="{{$palette.selencoder}}"
+        ng-disabled="$palette.disabled" ng-required="$palette.required" class="form-control">
       </select>
     </div>
   </div>

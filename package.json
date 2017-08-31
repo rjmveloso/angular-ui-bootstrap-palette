@@ -22,19 +22,24 @@
     "angular-mocks": "^1.6.2",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^2.0.0",
+    "gulp-bump": "^2.6.1",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.1",
+    "gulp-conventional-changelog": "^1.1.0",
+    "gulp-cssmin": "^0.2.0",
     "gulp-header": "^1.8.8",
+    "gulp-htmlmin": "^3.0.0",
     "gulp-jshint": "^2.0.4",
     "gulp-merge": "^0.1.1",
-    "gulp-minify-html": "^1.0.6",
     "gulp-plumber": "^1.1.0",
     "gulp-uglify": "^2.0.1",
     "jasmine-core": "^2.5.2",
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
     "karma": "^1.4.1",
+    "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.2"
+    "karma-phantomjs-launcher": "^1.0.2",
+    "minimist": "^1.2.0"
   }
 }

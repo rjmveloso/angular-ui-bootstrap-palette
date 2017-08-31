@@ -1,7 +1,18 @@
 language: node_js
 node_js:
-  - "4"
+  - "6"
 before_install:
   - npm install -g gulp
-install: npm install
-script: gulp test
+install:
+  - npm install
+script:
+  - gulp test
+deploy:
+  - provider: releases
+    api_key:
+      secure: iV8PgaAf66WnV7aNwJ2Yv8qIVF4+0QDjbJhMq1ZzXE5umBFg1p7VE114rYBllGTlif6yjts/aInAk31egCwUA+Y0hXCrNjlu3QRMORopIx53YqC6paklYhxYr/mcrv29j+4d8YXudLKq0H5UmNQHqSdJTXEdG9L9hdSDQm+96O4M2PcouQa4Z4GtKSCUI04RRYWyc+CXDXDdyJWtQFjbjyaU+/hvi8INdo6V5KnHZP1lNjCiF0LJByUkQVnB1MeCVRNTT/pEi4QD8abxLpMKhCefVYIVgg6w+GcHXmQygpcIPVhF6JV0SaZ9s50Il8tPAj3UTU0X9E7g/4oXcK0vGScRdiyNXIO6eA+9cXXMFXjP2gezBcqFW51Qum/ADMUJa466YwKl7wNamke4+mXg/IJSZ9lAPxLKZISwkLoj8XKo52156p2y45dB7AEXrfLn1+LiQMlhMkAmtyUlDMDhcRLMOIoI8JJ8zWQrGMpDaVEspGrew2tLNh/E5LHgaZIsR8EI118sBqjLm9W8cCkBlTg43Py4ISIqmZWawbedCEqm0z5I2yML24K/DwBq85VKnUGl+ZQgh/8UUI0l8jsJVO6EBFnvpGtOlRVGOazwZTBlIRbA4JDmBF0Z3K06dzFj6e2K19rDx6R3cD9UxzK8QgvjKK9b76bxPyDU5yJUHZ0=
+    file: dist/*
+    skip_cleanup: true
+    on:
+      tags: true
+ 

@@ -2,5 +2,7 @@
 .DS_Store
 
 dist
+.coverage
 .settings
 node_modules
+/.metadata/
